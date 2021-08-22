@@ -1,0 +1,261 @@
+A Swift Tour
+
+My Own notes on Swift Tour Summary Page for better understanding/comprehension/reference -Denis
+
+Heading 1: Simple Values
+
+"Let" is used or constants
+	-Does not need to be known at runtime but need to be assigned a value exactly once
+
+"Var" is used for variables
+
+Both most have the same type.
+
+	myVariable = 50, myVariable is inferred as a Int because it is initially assigned as an integer(50).
+
+If there is no initial value, specify type with a semicolon 
+
+	Ex: myVariable: String, myVariable2: Float = 4
+
+Values are not implicitly converted, meaning you will need to explicitly convert it. 
+	
+	Ex: let label = "Example" let width = 10 let labelWidth = label + String(width)
+
+Include Values in strings using (\) 
+	
+	Ex: "I have \(apples) apples."
+
+"""
+    Three double quotations for strings that take multiple lines
+
+    Ex: also stuff
+
+        third line
+"""
+
+Arrays and Dictionaries with [] symbol, commas after last element are allowed
+
+Access them using myVar[index] | for dictionaries myVarDict[key] 
+
+Add to array with myVar.append("stuff")
+
+Syntax for an empty array, you do not have to declare type if you can infer the type, such as passing in an arg from a function
+
+let emptyArr: [String] = []
+let emptyDict: [String: Float] = [:]
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Heading 2: Control Flow
+
+If
+	-must be boolean expression
+	If-let work with missing values (optionals) contain value or nil (?) to mark optional, if nil then {code} is skipped, otherwise unwrapped and made available,  
+	(??) is used to set default value if nil is found
+	ex: var optionalString: String?
+
+Switch
+	-Execution breaks after a case is met
+
+For - in
+	-iterate over dictionary
+	ex: for i in 0..<4 {total += i}
+	... |  >...  |  ...<
+
+while
+	-repeat until condition is met
+
+repeat-while
+	- 
+
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Heading 3: Functions and Closures
+
+Function argument labels
+	-Use a different name for a parameter in the place its called vs. its use, within the function
+		Example: let sum = computeSum(of: aaa and: bbb)  
+			but in the function its: func computeSum(of: Int, and: Int) -> Int {
+			return of + and //looks weird
+			}
+			---------------------------	
+			You can write: func computeSum(of firstValue: Int, and secondValue: Int) -> Int {
+					return firstValue + secondValue  //looks more clear
+					}
+
+Tuples
+	-return multiple values from a function
+	-returning different values in a tuple for different decisions, better for temporary values
+	-vs Array, its fixed in size, can't change item types after being created
+	-access using numerical positions, can't read non-existent names/numbers
+	-you can change the values, but not the type
+	Syntax: var name = (first: "Taylor:, last: "Swift")
+	name.0 | name.first
+	-Imagine we wanted to know a batter's best and worst score, we can use a tuple
+	-strongly typed, compiler will find if wrong type is passed in
+	-if a refactoring happens, and parameters change, compiler will probably catch
+	-associate name with each parameter
+	example: parameters can be extracted and assigned to variables
+		let(param1,param2,param3)= functionReturningTuple()
+	-parameters passed are actually a tuple
+	
+	Tuple vs Arrays
+		enum MyType{
+			case A,B,C
+		{
+		func foo() -> (MyType Int, String) {
+		return(.B,42, "Bar")
+		let(type, amount, desc) = foo()
+	Array:
+		func foo() -> [Any] {
+		return(.B,42, "Bar")
+		}
+		let result = foo()
+		let type = result[0] as MyType, amount = result[1] as Int, desc = result[2] as String
+
+Functions can be nested. Use to organize complex code
+Functions can return other functions, take functions as args
+Functions are special case closures
+
+numbers.map({ (number:int) -> Int in
+	let result = 3* number
+	return result
+})
+
+^^^^^^
+
+let mappedNumbers = numbers.sorted { $0 > $1 }
+print(sortedNumbers)
+
+Single statement closures can implicitly return value and type
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Heading 4: Objects and Classes
+
+Classes
+	use self to distinguish property vs argument
+	ex: class shape{
+		var name:string
+		init(name: string){
+		self.name = name 
+		}
+	every property needs a value assigned, through declaration or init()
+	use deinit() to close outside resources, before deallocation, 1 deinit() per class
+	use override for a subclass to override superclass implementation
+
+Getters | Setters
+		Use Get and set to decide how variables can be altered and what values they can receive/return
+			class family {
+				var _members:Int = 2
+				var members:Int {
+				  get{
+					return _members
+				  }
+				  set(newVal){
+					if newVal >= 2 {
+						_members = newVal
+					 }else{
+					  print("cannot have family with less then 2 members")
+					 }
+				      }
+			           }
+	-closely related to computed properties
+	-if running code before/after setting a value, use willSet | didSet, its possible to run code any time the value changes outside of first 	
+ 		init
+optionals ?
+	-if value before ? is nil, everything after it is ignored and expression is nil, otherwise ? will unwrap
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Heading 5: Enumerations and Structures
+
+ Enums
+	-Swift assigns raw values starting at 0 then increments, you can change this behavior by explicitly specifying values, you can use .rawValue to get the raw value
+	-use init?(rawValue:) to instantiate an enum from a raw value, returns enum case matching value or nil
+	-every instance of enum case has same rawValue
+	-associated values behave like stored properties of enum case instance
+		Example: Requesting sunrise / sunset times from a server, it responds with requested info or it responds with a description of what went wrong
+			enum ServerResponse {
+				case result(String,String)
+				case failure(String)
+			}
+			let success = ServerResponse.result("6:00am","8:09pm")
+			let failure = ServerResponse.result("Out of Cheese")
+			Switch success{
+			case let .result(sunrise, sunset){
+				 print("Sunrise is at \(sunrise)...")
+			case let .failure(message){
+				 print("Failure...\(message)")
+			}
+
+	-When to use ENUMs~~~~~~~~~~~~~~~~~~~
+
+	 -Improve correctness and readability, less boilerplate code, use when a var(especially a method parameter) can only take one out of a small set of possible values, ie.type constants or flags
+	 Example: class to emulate an enum
+		public class Color {
+		 private Color() {}
+		 public static final Color RED = new Color();
+		 public static final Color AMBER = new Color();
+		 public static final Color GREEN = new Color();
+		}
+		call: Color trafficLightColor = Color.RED;
+	  SAME AS: public enum Color {RED,AMBER,GREEN};
+	-Switch statements, way more code using a class
+		Color color =...;
+		switch(color) {
+			case RED:
+			  ....
+			  break;
+		}
+Structs
+	-Unlike classes, they are passed by Value not by reference. like var vs let?
+	- Example: If bob passes his phone number to Alice and she writes it down but with a mistake, his phone number is changed ---REFERENCE
+			If she writes it down wrong, only her copy is changed and bobs number does not change--VALUE
+
+	When to use Structs ~~~~~~~~~~~~~~~~~~~~~~~
+		-Well defined simple data types, like user data, a task, things with less complex relationships
+		-Thread Safety, copied from thread to thread without race condition conflicts/deadlock, classes must be made thread-safe
+		-mostly value types, then a struct may be better, if a struct has a class, be careful, they will share same class reference
+		-no inheritance, but uses protocols
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Heading 6: Protocols and Extensions
+
+-methods on class, can always modify the class
+-use extensions to add protocol conformance to a type, (imported types)
+Example, extension on Int: ExampleProtocol
+	-print(7.simple) works
+	- let protocol: ExampleProtcol = a, cannot access protoclValue.simpleDescription
+
+
+-----------------------------------------------------------------------
+-----------------------------------------------------------------------
+
+Heading 7: Generics
+
+
+
+func makeArray<Item>(repeating item: Item) -> [Item] {
+	Var result: [Item] = []
+	return result
+}
+makeArray(repeating: "knock")
+
+	When to use swift generics~~~~~~~~~~~~~~~~~~~~~
+	-networking calls, avoid repeating code for calls
+
+
+A bit advanced for me, but I get the concept, a generic function where you can fill in with types
+rewatch lets build that app video: Advanced Swift Generics: Best Solution to Eliminate Code Duplication!
+If you are repeating multiple calls with different parameters, such as an api call to different URLs consider generics
+	
