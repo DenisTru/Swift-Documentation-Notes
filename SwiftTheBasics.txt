@@ -1,0 +1,359 @@
+The Basics
+	Constants and Variables
+		-Type annotations
+			using ":" means "...of type...," 
+			define multiple vars at once, var red, green : Double
+			*rare in practice
+		-Naming Constants/Variables
+			-names can contain unicode
+			*reserved keywords can be named with barticks(`)
+		-Printing Constants/Variables
+			-print() terminates print by adding line break
+			-print(someValue, terminator: "")
+			-string interpolation- fancy for showing constants in a print statement
+	Comments
+		-nested comments, /*/**/*/, comment out large blocks of code quickly
+	SemiColons
+		-semicolons required for multiple statements, one line
+	Integers
+		-.min | .max
+		-UInt, only use when you need unsigned int type
+	Floating-Point Numbers
+		-Double is 64bit, float is 32bit
+		- double 15 digit precision | float 6 digit, double preferred
+	Type Safety and Type Inference !!
+		- less declaration of variable type, its inferred
+	Numeric Literals
+		- possible to write numbers in decimal,binary,octal,hexadecimal
+	Numeric Type Conversion !!
+		- by défault use Ints, unless specific use case for other types is needed
+		-Int Conversion: convert number types on case-by-case basis
+		-UInt16, has initializer to make a Uint 8, use extensions for custom intializers
+		-Int/Float conversion: must convert to Double for addition, when float is converted to int like this, value is truncated.
+		-combining numeric constants need conversion ex: Double() | combining numeric literals -inferred at compile time
+	Type Aliases
+		-Type aliases are useful when you want to refer to an existing type by a name that’s contextually more appropriate, such as when working with data of a specific size from an external source, typealias AudioSample = UInt16
+
+	Booleans
+		-nothing significant
+	Tuples !!
+		-group multiple values, any type, does not have to be the same
+		-let http404Error = (status: 404, "Not Found")
+		-decompose tuples, into separate constants, let (statusCode, statusMessage) = http404Error
+		-access at indexes as well, http404Error.0
+		-tuples can also be named, names can be used to access tuple
+		-useful for return value of functions, returning multiple values = more useful information
+		-used for simple groups of related values, better struct or class for more complex stuff
+	Optionals !!~~!!
+		-used where there is no value, value & unwrap, or no value at all
+		-closest thing on objC is ability to return nil
+		-swift optionals, allow indication of no value for ANY TYPE AT ALL, no need for special constants
+		-Number Conversion, example of optional
+let possibleNumber = "123"
+let convertedNumber = Int(possibleNumber)
+// convertedNumber is inferred to be of type "Int?", or "optional Int"
+
+	Nil
+		-only works with optionals
+		-optionals without a value, auto set to nil
+		-ObjC nil is a pointer to a non-existent object | Swift Nil, absence of value
+	If Statements/Forced Unwrapping
+		-use if statement to check optional != nil, "!" To force unwrap (must have non-nil value)
+	Optional Binding
+		-find if optional has a value then make value available as temp constant
+		-binding can be used with if statements to check for value and extract it, if let
+		-using optional binding instead of forced unwrapping
+		-If the optional Int returned by Int(possibleNumber) contains a value, set a new constant called actualNumber to the value contained in the optional.”
+		-combine multiple optional bindings and nested ifs, but if one fails, the whole thing fails
+		- constants/variables created In optional binding if statement, only available in that body, guard statements allow outside use.
+		"Constants and variables created with optional binding in an if statement are available only within the body of the if statement. In contrast, the constants and variables created with a guard statement are available in the lines of code that follow the guard statement"
+
+	Implicitly Unwrapped Optionals
+		- Optionals that are assumed to always have value, after it is first set
+		-remove the need to check and unwrap optional's value every time
+		-a.k.a. String! Vs String?
+		String? Will need to be unwrapped later with String!
+		-String! force unwrap then can be assigned straight to String
+	NEED MORE WORK ON IMPLICIT UNWRAP, NOT VERY CLEAR, basically, if you know the value then unwrap it right away, otherwise use optional binding and check
+		-behave as unwrapped optionals, no need for guard or if let, every time
+		- used if variable starts as nil, but will always have value before use
+		-nice to not use if let, every time
+		-https://www.hackingwithswift.com/sixty/10/5/implicitly-unwrapped-optionals
+
+
+Assertions and Preconditions
+		-Assertions help you find mistakes and incorrect assumptions during development, and preconditions help you detect issues in production.
+		-Assertions check during debug, preconditions during both
+	Debugging with Assertions
+		-assert(_:_:file:line:) | assertionFailure(_:file:line:)
+	Enforcing Preconditions
+		-use when condition could be false, but MUST DEFINITELY true for execution
+		-precondition(_:_:file:line:)
+		-preconditionFailure(_:file:line:), can use when default switch case is used
+		-compile in unchecked mode, to skip preconditions
+		-fatalError(_:file:line:), create stubs for unimplemented features 
+
+Basic Operators
+	Terminology
+		-ternary condition operator (a ? b : c).
+	Assignment Operator
+		- assignment operator (=) does not return a value
+	Arithmetic Operators
+		-values do not overflow by default, for overflow check overflow operators
+	Compound Assignment operators, b= a += 2, will not work
+	Comparison Operators
+		-(=== and !==) check for same instance
+		-compare tuples to see if all elements are equal, up to 7 elements
+	Ternary Conditional Operator !!
+		-evaluate based on bool otherwise returns second statement
+		- short hand for 
+			if question {
+			    answer1
+			} else {
+			    answer2
+			}
+		-example: calculating table row height, if row has a header vs no header
+			instead of if else, its a one line code, don't overuse it
+
+	Range Operators !!
+		-Closed Range Operator
+			-(a...b) useful for when you want to iterate over all values, ex: for-in
+		-Half-Open Range Operator
+			-(a...<b) range from a to b but not including b
+			-use case: 0 based lists/ arrays
+		-One-Sided Ranges
+			-...2 | 2... | 2<... | ...<2
+			-you can check if range has a particular value, .contains
+	Logical Operators
+			-! | && | ||
+
+Strings and Characters
+	- NSString, importing foundation allows access to NSString methods without casting
+	String Literals
+	Initializing an Empty String "" or String(), .isEmpty
+	String Mutability-show string mutability by assigning to var or let
+	Strings are Value Types- strings are copied when edits happen
+	Working with Characters- for-in loop or use Character Type, construct strings 
+		let catCharacters: [Character] = ["C", "a", "t", "!", "🐱"]
+		let catString = String(catCharacters)
+
+	Concatenating Strings and Characters (+) (+=) .append(), can't append to Char var (1 char only)
+	String Interpolation -\() | extending delimiters
+	Unicode
+	Counting Characters .count | grapheme clusters, count will be the same if e changes to é
+	Accessing and Modifying a String
+		-String Indices String.index, not indexed by int values(unicode scalar),subscript syntax
+			let greeting = "Guten Tag!"
+			greeting[greeting.startIndex]
+			// G
+			greeting[greeting.index(before: greeting.endIndex)]
+			// !
+			greeting[greeting.index(after: greeting.startIndex)]
+			// u
+			let index = greeting.index(greeting.startIndex, offsetBy: 7)
+			greeting[index]
+			// a
+			-.indices to access each character
+			-.startIndex .endIndex can be used on any method conforming to Collection Protocol, string, array, dictionary, set etc
+
+		-Inserting and Removing
+			insert(_:at:) | remove(at:)
+			insert(contentsOf:at:) | removeSubrange(_:)
+			also usable on any RangeReplaceableCollection protocol
+	Substrings
+		-instance of substring, not another string
+		-convert substring to string for longterm storage
+		-performance optimization, substrings reuse memory
+		-both conform to StringProtocol
+	Comparing Strings
+		-String and Character equality
+			-== !=
+		-Prefix and Suffix Equality
+			-hasPrefix(_:) | hasSuffix(_:)
+			-use prefix/suffix to count instances of a certain text
+			-Example: "Act 1 Scene 1: Verona, A public place"
+
+Collection Types TAKE NOTES ON SWIFT ARRAY DOCS to see built in features
+		-Array, ordered collection, any values
+		-sets, unordered collection/ UNIQUE values
+		-Dictionary, unordered collection, KEY-value pairs
+		-Implemented as Generic Collections, type-agnostic
+
+	when to use sets
+Sets do not store objects in the order they add them.
+Instead, they are stored in a way to make them fast to find, which means finding items in sets is extremely efficient.
+Sets store each item precisely once.
+All items you want to store in a set must conform to Hashable.
+You intend to add each item only once. Sets never allow duplicates.
+You don’t care about the order of the items in the set.
+You don’t need to use APIs that require arrays.
+You’re storing Hashable types, either your own or one of Swift’s built-in types likes strings and integers. Sets use hash values for fast look up of items.
+You can use sets instead of arrays if ordering of elements is not an issue, or if you want to ensure that there are no duplicate values. (sets allow only distinct values.)
+	https://www.hackingwithswift.com/example-code/language/when-to-use-a-set-rather-than-an-array
+
+
+	Mutability of Collections
+		-good practice to make immutable collections for optimization
+	Arrays
+		-look into NSArray
+		-var emptyArray: [Int] = []
+		-create array with default value Array(repeating: 0.0, count: 3)
+		-add arrays together with (+)
+		-create array with array literals array = [item1,2,3]
+	Dictionaries
+		-.count, .isEmpty, .append, +=, item[0] (zero-index), .insert(_:at:), remove(at:)
+		-largest valid index in an array is count - 1 because arrays are indexed from zero—however, when count is 0 (meaning the array is empty), there are no valid indexes. 
+		-removeLast()
+	-Iterate Over an Array
+		-For-in
+		-if you need the integer index and value, .enumerated() returns tuple with both
+	-Sets
+		-use over array, when order does not matter, unique values
+		-Bridge Between Set and NSSet	
+
+Control Flow
+	For-In loops
+		- iterate over dict, returns tuples, dict retrieval is unordered though
+		-stride(from:to:by:)
+		-(from:through:by:)
+		-
+	While Loops
+		-repeat while | do-whle
+
+	Conditional Statements
+		If
+		Switch  !!
+		No Implicit Fallthrough !!
+			-once first case is matched, switch stops execution, no explicit break; required
+			-use fallthrough keyword if needed
+
+		Interval Matching
+			-example: check for inclusion in an interval
+			case 1..<5:
+    			naturalCount = "a few"
+		Tuples
+			-using tuples in switch cases Ex: case (0, 0):
+		Compound Cases
+			-case "a", "e":
+			-VALUE BINDINGS???
+	Control Transfer Statements
+		-Break - ends execution of statement earlier
+		-Fallthrough - if you need to use more cases then one in a switch
+	Early Exit
+		-guard statements, condition must be true for code to be executed, always has else clause, guard improves readability
+
+Functions
+	Defining and Calling Functions
+	Function Parameters and Return Values
+		-functions without defined return type, return Void, empty tuples
+	Function Argument Labels and Parameter Names  !!
+		Specifying Argument Labels!!
+		Omitting Argument Labels
+		Default Parameter Values
+	Function Types
+	Nested Functions
+Not much new concepts yet*
+
+Closures
+	Closure Expressions !!
+	{ (parameters) -> return type in
+    	statements
+	}
+	Trailing Closures !!
+	-reversedNames = names.sorted() { $0 > $1 }
+	-if only argument can be written as:
+	reversedNames = names.sorted { $0 > $1 }
+	-multiple closures, 
+	
+	func loadPicture(from server: Server, completion: (Picture) -> Void, onFailure: () -> Void) {
+	    if let picture = download("photo.jpg", from: server) {
+	        completion(picture)
+   	 } else {
+     	   onFailure()
+   	 }
+	}
+Becomes
+	loadPicture(from: someServer) { picture in
+	    someView.currentPicture = picture
+	} onFailure: {
+   	 print("Couldn't download the next picture.")
+	}
+
+JUST NEED RAW PRACTICE USING MORE CLOSURES, MORE PRACTICE FOR MORE USE CASES, NEEDS TO CLICK
+
+Enumerations
+	Enumeration Syntax
+		-enum / case
+		- no default integer values, each case are a value of type enum whateveritis
+		-multiple cases on a single line
+		- use singular names rather then plural(show self-evidence)
+		-type is inferred when initialized with a value of the enum
+		- "." syntax can be used, aka. .east instead of compassPoint.east
+
+	Matching Enumeration Values in a Switch Statement
+		- set variables equal to a case I.e =.east , case .east: "do this"
+		-switch must be exhaustive
+	Iterating over Enumeration Cases
+		- create a collection of enumeration cases, enum Beverage :CaseIterable. (Protocol)
+		-call the collection with .allcases, i.e Beverage.allCases.Count
+	Associated Values !!
+		-Values of other types, stored with case values
+		-varies each time case is used
+		-also called discriminated unions, tagged unions, or variants
+		-var can only store a case and its assoc. value, one at a time
+		-you can use a switch case on a var to extract assoc. values as constants
+		-bit fuzzy on concept, not hard to understand, but I will forget the exact definition, 
+
+Example: switch productBarcode {
+case let .upc(numberSystem, manufacturer, product, check):
+    print("UPC : \(numberSystem), \(manufacturer), \(product), \(check).")
+case let .qrCode(productCode):
+    print("QR code: \(productCode).")
+}
+
+Structures and Classes
+	Comparing Structures and Classes
+		-Both: Define properties, methods, subscripts, inits, extensions, protocols
+		-Classes: inheritance, type casting, deinit(), auto reference counting
+	Structures and Enumerations are Value Types !!~~!!
+		-meaning, always copied when passed, not referenced
+		-collections are only copied right before being modified, also applies to enums
+		-if copy is edited, original instance won't be edited, var a = anEnum.west, var b = a, changes to b won't change value of a because its a copy
+	Classes are Reference Types
+		-changes occur to the same instance
+
+Properties
+	Understand Type Properties and Type Methods vs normal methods and properties
+		-property observers
+		-property wrapper to reuse code in getter/setter of multiple properties
+	Stored Properties
+		-var, and let basically
+	Global and Local Variables
+		-global variables defined outside all type contexts, computed lazily
+		-local never computed lazily
+		-cannot apply property wrappers to global/computed variables @propertywrapperlookslikethis
+
+	Type Properties !!
+		-properties belonging to the type not any one instance, useful to define values, universal to all instances of a type, maybe a static constant
+		-stored type properties must have default value, guarantee initialized once
+		
+
+Methods 
+	Instance Methods 
+		-methods that belong to an instance of a particular class 
+		The self Property
+			-implicit property, equivalent to instance itself, when referring to properties within the instance, swift usually assumes this
+			-use self property to distinguish between parameter names and property name
+		Modifying Value Types from Within Instance Methods !!
+			-mutating keyword
+	Type Methods !!
+		-static keyword, allows you to call methods on type instead of instance of type
+		-example: having levels unlocked by one player, show up for a new player 2
+
+Initialization
+	Setting Initial Values for Stored Properties
+	using init, default values, ties closer to property initialization
+	Customizing Initialization !!~~!!
+		-initialization parameters
+			example: celsius temperature based on passed in Fahrenheit or kelvin
+	Default Intializers
